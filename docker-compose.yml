@@ -1,0 +1,92 @@
+version: '3.8'
+services:
+  myDB:
+    image: mysql:8.0.17
+    environment:
+      - MYSQL_USER=hyperativa
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    entrypoint:
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS auth; GRANT ALL PRIVILEGES ON auth.* TO '\''hyperativa'\''@'\''%'\''; ' > /docker-entrypoint-initdb.d/init.sql;
+        echo 'CREATE DATABASE IF NOT EXISTS card; GRANT ALL PRIVILEGES ON card.* TO '\''hyperativa'\''@'\''%'\''; ' >> /docker-entrypoint-initdb.d/init.sql;
+        echo 'CREATE DATABASE IF NOT EXISTS batch; GRANT ALL PRIVILEGES ON batch.* TO '\''hyperativa'\''@'\''%'\''; ' >> /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
+      "
+    volumes:
+      - myDB:/var/lib/mysql
+    ports:
+      - 3306:3306
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 10s
+    networks:
+      - app-network
+  authorization-app:
+    container_name: authorization-app
+    build:
+      context: ./authentication/
+      dockerfile: Dockerfile
+    depends_on:
+      myDB:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://myDB:3306/auth
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+  card-app:
+    container_name: card-app
+    build:
+      context: ./card/
+      dockerfile: Dockerfile
+    depends_on:
+      myDB:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://myDB:3306/card
+    ports:
+      - "8081:8081"
+    networks:
+      - app-network
+  batch-app:
+    container_name: batch-app
+    build:
+      context: ./batch/
+      dockerfile: Dockerfile
+    depends_on:
+      myDB:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://myDB:3306/batch
+      - SPRING_DATASOURCE_JDBCURL=jdbc:mysql://myDB:3306/batch
+      - APP_DATASOURCE_URL=jdbc:mysql://myDB:3306/card
+      - APP_DATASOURCE_JDBCURL=jdbc:mysql://myDB:3306/card
+    networks:
+      - app-network
+  nginx:
+    container_name: nginx-https
+    image: nginx:latest
+    volumes:
+      - ./nginx/certs:/etc/nginx/certs
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - authorization-app
+      - card-app
+    networks:
+      - app-network
+    restart: always
+volumes:
+  myDB:
+    driver: local
+networks:
+  app-network:
+    driver: bridge

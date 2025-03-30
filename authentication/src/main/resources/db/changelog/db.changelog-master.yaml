@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: davison
+  - include:
+      file: 001_CREATE_TABLES.sql
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: 2
+      author: davison
+  - include:
+      file: 002_INSERT_USER.sql
+      relativeToChangelogFile: true
