@@ -1,4 +1,4 @@
-package com.dazo.hyperativa.card.batch.config.batch;
+package com.dazo.hyperativa.card.batch.config.infrastructure.batch;
 
 import com.dazo.hyperativa.card.batch.executor.ProcessCardTasklet;
 import com.dazo.hyperativa.card.batch.service.ProcessCardService;

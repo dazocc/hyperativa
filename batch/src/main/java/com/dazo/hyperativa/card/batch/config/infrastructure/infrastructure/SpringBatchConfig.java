@@ -1,4 +1,4 @@
-package com.dazo.hyperativa.card.batch.config.infrastructure;
+package com.dazo.hyperativa.card.batch.config.infrastructure.infrastructure;
 
 import org.springframework.batch.core.configuration.BatchConfigurationException;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;

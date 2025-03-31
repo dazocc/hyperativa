@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 class CardServiceImplTest {
 
     public static final String NUMBER = "123456789";
+
     @Mock
     private CardRepository cardRepository;
 

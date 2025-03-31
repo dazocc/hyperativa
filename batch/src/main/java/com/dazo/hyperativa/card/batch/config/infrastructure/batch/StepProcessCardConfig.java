@@ -1,4 +1,4 @@
-package com.dazo.hyperativa.card.batch.config.batch;
+package com.dazo.hyperativa.card.batch.config.infrastructure.batch;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-public class StepProccessCardConfig {
+public class StepProcessCardConfig {
 
     @Bean
-    public Step stepProccessCard(JobRepository jobRepository,
-                                 @Qualifier("appTransactionManager") PlatformTransactionManager platformTransactionManager,
-                                 Tasklet processCardTasklet) {
+    public Step stepProcessCard(JobRepository jobRepository,
+                                @Qualifier("appTransactionManager") PlatformTransactionManager platformTransactionManager,
+                                Tasklet processCardTasklet) {
 
-        return new StepBuilder("stepProccessCard", jobRepository)
+        return new StepBuilder("stepProcessCard", jobRepository)
                 .tasklet(processCardTasklet, platformTransactionManager)
                 .build();
     }

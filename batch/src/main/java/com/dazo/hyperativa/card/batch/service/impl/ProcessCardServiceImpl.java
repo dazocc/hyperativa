@@ -94,9 +94,8 @@ public class ProcessCardServiceImpl implements ProcessCardService {
                 }else if("L".equals(lineType)){
                     break;
                 }
-
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Error ao process line file", e);
             statusType = StatusType.ERROR;
         }

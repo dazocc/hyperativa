@@ -1,4 +1,4 @@
-package com.dazo.hyperativa.card.batch.config.infrastructure;
+package com.dazo.hyperativa.card.batch.config.infrastructure.infrastructure;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;

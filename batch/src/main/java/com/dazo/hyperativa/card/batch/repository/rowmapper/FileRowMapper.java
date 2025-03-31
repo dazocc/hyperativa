@@ -12,7 +12,10 @@ public class FileRowMapper implements RowMapper<FileDTO> {
     public FileDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
         return FileDTO.builder()
                 .id(rs.getLong("id"))
+                .name(rs.getString("name"))
+                .status(rs.getString("status"))
                 .data(rs.getBytes("data"))
+                .dataError(rs.getBytes("data_error"))
                 .build();
     }
 }

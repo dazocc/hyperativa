@@ -1,4 +1,4 @@
-package com.dazo.hyperativa.card.batch.config.infrastructure;
+package com.dazo.hyperativa.card.batch.config.infrastructure.infrastructure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;

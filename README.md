@@ -48,7 +48,7 @@ Os certificados e configuração do nginx estão na pasta raiz do projeto ./ngin
 Este projeto tem como objetivo authenticação para isso deve receber usuário e senha e retornara um token jwt que
 deverá ser utilizado no sistema card.
 
-O projeto foi criado utilizando spring boot 3.4, está conectando no mysql, está utilizando o liquidbase para criar
+O projeto foi criado utilizando spring boot 3.4, está conectando no mysql, está utilizando o liquibase para criar
 tabelas e inserir registros, docker e maven para build, foi aplicado testes unitários que estão na pastas /test, 
 foi aplicado testes de integração utilizando h2 que estão na pasta integration-test.
 
@@ -65,7 +65,7 @@ Além disso, toda requisição é logada conforme requisito.
 Este projeto tem como objetivo gerenciar a criação e consulta de cartões para isso deve receber um token válido gerado no
 sistema authentication e utilizado os endpoints card e file.
 
-O projeto foi criado utilizando spring boot 3.4, está conectando no mysql, está utilizando o liquidbase para criar 
+O projeto foi criado utilizando spring boot 3.4, está conectando no mysql, está utilizando o liquibase para criar 
 tabelas e inserir registros, docker e maven para build, foi aplicado testes unitarios que estão na pastas /test, 
 foi aplicado testes de integração utilizando h2 que estão na pasta integration-test.
 
@@ -110,4 +110,5 @@ Se não houver erros gravará na tabela de files que o processamento finalizou c
 haja erros gravrá que finalizou com erros "ERROR".
 
 O projeto foi criado utilizando spring boot 3.4 e sprig batch utilizando tasklet, está conectando no mysql, está 
-utilizando o liquidbase para criar tabelas e inserir registros, docker e maven para build.
+utilizando o liquibase para criar tabelas e inserir registros, docker e maven para build, foi aplicado testes 
+unitários que estão na pastas /test, foi aplicado testes de integração utilizando h2 que estão na pasta integration-test.

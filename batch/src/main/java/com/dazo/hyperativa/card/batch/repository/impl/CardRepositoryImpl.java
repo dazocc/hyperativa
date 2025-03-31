@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CardRepositoryImpl implements CardRepository {
 
+    public static final String DELETE_ALL_CARDS = "delete from cards";
     private final JdbcTemplate jdbcTemplate;
 
     public static final String EXISTS_CARDS_BY_NUMBER = "select 1 from cards where number = ?";
@@ -32,5 +33,10 @@ public class CardRepositoryImpl implements CardRepository {
     @Override
     public void insertCard(String number) {
         jdbcTemplate.update(INSERT_CARDS_NUMBER, number);
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update(DELETE_ALL_CARDS);
     }
 }
