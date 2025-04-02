@@ -27,7 +27,11 @@ Quando executar o comando para iniciar, o docker subirá os serviços do mysql, 
 
 Iniciará na porta padrão 3306, sendo o user hyperativa e senha password. As database de cada sistema
 (authorization, card e batch) já serão criadas e concedidos os grants.
-    
+
+### Detalhes sobre o redis:
+
+Iniciará na porta padrão 6379. Será utilizado pelo sistema card para fazer cache no endpoint card de consulta.
+
 ### Detalhes sobre o projeto nginx:
 
 Está configurado o ssl mas como não tenho um certificado para  o mesmo foi gerado um certificado auto assinado:
@@ -67,7 +71,8 @@ sistema authentication e utilizado os endpoints card e file.
 
 O projeto foi criado utilizando spring boot 3.4, está conectando no mysql, está utilizando o liquibase para criar 
 tabelas e inserir registros, docker e maven para build, foi aplicado testes unitarios que estão na pastas /test, 
-foi aplicado testes de integração utilizando h2 que estão na pasta integration-test.
+foi aplicado testes de integração utilizando h2 que estão na pasta integration-test, sistema de cache utilizando redis
+na consulta de card.
 
 Neste projeto é possível criar um cartão executando um post no endpoint /card e informando o number do cartão no body Ex:
 
