@@ -3,6 +3,7 @@ package com.dazo.hyperativa.card.advice;
 import com.dazo.hyperativa.card.exception.BusinessException;
 import com.dazo.hyperativa.card.exception.MessageEnum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import static com.dazo.hyperativa.card.exception.MessageEnum.ERROR_500;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class AppExceptionHandler {
 
     private final MessageSource messageSource;
@@ -42,7 +44,9 @@ public class AppExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<MensageExceptionResponse> businessException(Exception exception){
+    public ResponseEntity<MensageExceptionResponse> exception(Exception exception){
+
+        log.error("Exception", exception);
 
         String mensagem = getMensagem(ERROR_500);
 

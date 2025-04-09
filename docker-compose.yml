@@ -1,5 +1,15 @@
-version: '3.8'
 services:
+  redis:
+    container_name: redis_card
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
   myDB:
     image: mysql:8.0.17
     environment:
@@ -14,7 +24,7 @@ services:
         /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password
       "
     volumes:
-      - myDB:/var/lib/mysql
+      - myDB:/var/lib/mysql2
     ports:
       - 3306:3306
     healthcheck:
@@ -39,18 +49,30 @@ services:
       - "8080:8080"
     networks:
       - app-network
+  card-maven-build:
+    image: maven:3.9.9-eclipse-temurin-21
+    container_name: maven-build
+    working_dir: /app
+    user: "1000:1000"
+    volumes:
+      - ./card:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: mvn clean verify -P integration-test
   card-app:
     container_name: card-app
     build:
       context: ./card/
       dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://myDB:3306/card
+      SPRING_REDIS_HOST: redis_card
+    ports:
+      - "8081:8081"
     depends_on:
       myDB:
         condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://myDB:3306/card
-    ports:
-      - "8081:8081"
+      card-maven-build:
+        condition: service_completed_successfully
     networks:
       - app-network
   batch-app:
@@ -86,6 +108,8 @@ services:
     restart: always
 volumes:
   myDB:
+    driver: local
+  redis_data:
     driver: local
 networks:
   app-network:
